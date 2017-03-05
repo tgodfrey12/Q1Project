@@ -8,37 +8,110 @@
 
 var googlePlacesAPIKey = "AIzaSyDkglGA_QCRbWdTB8WbheqnjLhGJ4D74Lg";
 
+
+// This example requires the Places library. Include the libraries=places
+// parameter when you first load the API. For example:
+// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
 var map;
-var service;
-var infowindow;
 
 function initMap() {
-    var austin = new google.maps.LatLng(30.2672654, -97.768282);
+    var austin = {
+        lat: 30.2672654,
+        lng: -97.768282
+    };
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: austin,
-        zoom: 15
+        zoom: 17
     });
 
-    var request = {
+    var service = new google.maps.places.PlacesService(map);
+    service.nearbySearch({
         location: austin,
-        radius: '5000',
-        types: ['restaurant']
-    };
-
-    service = new google.maps.places.PlacesService(map);
-    service.nearbySearch(request, callback);
+        radius: 5000,
+        type: ['bar']
+    }, processResults);
 }
 
-function callback(results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-            var place = results[i].name;
-            //createMarker(results[i]);
-            console.log(place);
+function processResults(results, status, pagination) {
+    if (status !== google.maps.places.PlacesServiceStatus.OK) {
+        return;
+    } else {
+        createMarkers(results);
+
+        if (pagination.hasNextPage) {
+            var moreButton = document.getElementById('more');
+
+            moreButton.disabled = false;
+
+            moreButton.addEventListener('click', function() {
+                moreButton.disabled = true;
+                pagination.nextPage();
+            });
         }
     }
 }
+
+function createMarkers(places) {
+    var bounds = new google.maps.LatLngBounds();
+    var placesList = document.getElementById('places');
+
+    for (var i = 0, place; place = places[i]; i++) {
+        var image = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+        };
+
+        var marker = new google.maps.Marker({
+            map: map,
+            icon: image,
+            title: place.name,
+            position: place.geometry.location
+        });
+
+        placesList.innerHTML += '<li>' + place.name + '</li>';
+
+        bounds.extend(place.geometry.location);
+    }
+    map.fitBounds(bounds);
+}
+
+// var map;
+// var service;
+// var infowindow;
+//
+// function initMap() {
+//     var austin = new google.maps.LatLng(30.2672654, -97.768282);
+//
+//     map = new google.maps.Map(document.getElementById('map'), {
+//         center: austin,
+//         zoom: 15
+//     });
+//
+//     var request = {
+//         location: austin,
+//         radius: '5000',
+//         types: ['bar']
+//     };
+//
+//     service = new google.maps.places.PlacesService(map);
+//     service.nearbySearch(request, callback);
+// }
+//
+// function callback(results, status) {
+//     if (status == google.maps.places.PlacesServiceStatus.OK) {
+//         for (var i = 0; i < results.length; i++) {
+//             var place = results[i].name + " " + results[i].id;
+//
+//             //createMarker(results[i]);
+//             console.log(place);
+//         }
+//     }
+// }
 
 // function initMap() {
 //
