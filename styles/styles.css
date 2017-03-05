@@ -1,5 +1,21 @@
 #map {
   height: 80%;
-  width: 80%;
-  float: right;
+  width: 75%;
+  float:right;
+  position: relative;
+  bottom: 35%;
+}
+
+.leftTopPanel{
+  width: 20%;
+  height: 50%;
+  background-color: green;
+  position: relative;
+
+}
+
+.leftBottomPanel{
+  width: 20%;
+  height: 50%;
+  background-color: red;
 }
