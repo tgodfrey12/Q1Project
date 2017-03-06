@@ -30,7 +30,7 @@ function initMap() {
     service.nearbySearch({
         location: austin,
         radius: 50000,
-        type: ['bar'],
+        //type: ['bar'],
         keyword: 'brewery'
     }, processResults);
 }
