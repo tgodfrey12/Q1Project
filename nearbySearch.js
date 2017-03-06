@@ -58,7 +58,7 @@ function createMarkers(places) {
     var bounds = new google.maps.LatLngBounds();
     var placesList = document.getElementById('places');
 
-    for (var i = 0, place; place = places[i]; i++) {
+    for (let i = 0, place; place = places[i]; i++) {
         var image = {
             url: place.icon,
             size: new google.maps.Size(71, 71),
@@ -74,11 +74,10 @@ function createMarkers(places) {
             position: place.geometry.location
         });
 
-        var placeID = place.place_id;
-        //placesList.innerHTML += '<li class="placeLink"><a href ="someMethod">' + place.name + '</a>' + '</li>';
-        //placesList.innerHTML += '<li onclick="getDetails(' + placeID + ')"<a href ="someMethod">' + place.name + '</a></li>';
-        var newDiv = document.createElement("li");
+        let placeID = place.place_id;
 
+        //Add href to the list items and set up event listener
+        var newDiv = document.createElement("li");
         var newContent = document.createTextNode(place.name);
         var newAnchor = document.createElement("a");
         newAnchor.append(newContent);
@@ -86,25 +85,22 @@ function createMarkers(places) {
 
         newDiv.append(newAnchor);
         //newDiv.addEventListener('click', getDetails(placeID));
-        newDiv.addEventListener('click', function() {
-            getDetails(placeID);
+        newDiv.addEventListener('click', function(ev) {
+            ev.preventDefault();
+            getPlaceDetails(placeID);
         });
         placesList.append(newDiv);
 
 
-        //document.create()
-
-        //Works
-        //var placeDetails = getPlaceDetails(place.place_id);
 
         bounds.extend(place.geometry.location);
     }
     map.fitBounds(bounds);
 }
 
-function getDetails(placeID) {
-    console.log('Clicked in Placelist: ' + placeID);
-}
+// function getDetails(placeID) {
+//     console.log('Clicked in Placelist: ' + placeID);
+// }
 
 function getPlaceDetails(googlePlaceID) {
 
@@ -118,7 +114,16 @@ function getPlaceDetails(googlePlaceID) {
 }
 
 function showPlaceDetails(place, status) {
+    console.log("in showPlaceDetails");
+
+    var detailsList = document.getElementById('details');
+
     if (status == google.maps.places.PlacesServiceStatus.OK) {
+        var detailDiv = document.createElement("li");
+        var newContent = document.createTextNode(place.name);
+        detailDiv.append(newContent);
+        detailsList.append(detailDiv);
+
         //createMarker(place);
         // console.log("Place = " + place.name);
         // console.log("Rating = " + place.rating);
