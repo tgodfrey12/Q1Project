@@ -82,13 +82,15 @@ function createMarkers(places) {
         //console.log(Object.keys(place));
 
 
-        placesList.innerHTML += '<li>' + place.name + '<br>';
-        placesList.innerHTML += place.vicinity;
-        placesList.innerHTML += '</li>'
+        placesList.innerHTML += '<li class="placeLink"><a href ="someMethod">' + place.name + '</a>' + '</li>';
+
+        // placesList.innerHTML += place.vicinity;
+        // placesList.innerHTML += '</li>'
 
 
 
         var placeDetails = getPlaceDetails(place.place_id);
+        //placesList.click(displayAlbumsAndTracks);
 
         bounds.extend(place.geometry.location);
     }
@@ -99,11 +101,8 @@ function getPlaceDetails(googlePlaceID) {
 
     console.log("PlaceID = " + googlePlaceID);
     var request = {
-        //placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4'
         placeId: googlePlaceID
     };
-
-    //console.log("request = " + request.placeId);
 
     service = new google.maps.places.PlacesService(map);
     service.getDetails(request, showPlaceDetails);
@@ -119,9 +118,8 @@ function showPlaceDetails(place, status) {
     } else {
         console.log(status);
     }
-
-
 }
+
 
 // var map;
 // var service;

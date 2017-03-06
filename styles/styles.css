@@ -1,23 +1,35 @@
 #map {
-  height: 85%;
-  width: 896px;
+  height: 100%;
+  width: 57.5%;
   float:right;
   /*position: relative;*/
-  bottom: 35%;
+  /*bottom: 35%;*/
 }
 
-.leftTopPanel{
-  width: 30%;
-  height: 50%;
-  background-color: green;
+.buttonPanel{
+  width: 33%;
+}
+
+.placesPanel{
+  color: black;
+  width: 42.5%;
+  height: 66%;
+  /*background-color: green;*/
   position: relative;
   overflow: scroll;
+  /*font-family: "Lucida" Grande, sans-serif;*/
 
 }
 
-.leftBottomPanel{
-  width: 30%;
-  height: 50%;
+.detailsPanel{
+  width: 42.5%;
+  height: 33%;
   background-color: red;
+  /*font-family: "Lucida" Grande, sans-serif;*/
   /*overflow: scroll;*/
+}
+
+li{
+  color: black;
+  font-family: "Lucida" Grande, sans-serif;
 }
