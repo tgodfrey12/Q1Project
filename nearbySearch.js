@@ -114,7 +114,7 @@ function showPlaceDetails(place, status) {
         //createMarker(place);
         console.log("Place = " + place.name);
         console.log("Rating = " + place.rating);
-        console.log("Rating = " + place.geometry);
+        console.log("Geometry = " + place.geometry);
 
     } else {
         console.log(status);
