@@ -41,8 +41,6 @@ function processResults(results, status, pagination) {
     } else {
         createMarkers(results);
 
-
-
         if (pagination.hasNextPage) {
             var moreButton = document.getElementById('more');
 
@@ -76,25 +74,36 @@ function createMarkers(places) {
             position: place.geometry.location
         });
 
+        var placeID = place.place_id;
+        //placesList.innerHTML += '<li class="placeLink"><a href ="someMethod">' + place.name + '</a>' + '</li>';
+        //placesList.innerHTML += '<li onclick="getDetails(' + placeID + ')"<a href ="someMethod">' + place.name + '</a></li>';
+        var newDiv = document.createElement("li");
 
-        // console.log('place = ' + place);
-        // console.log('place_id  = ' + place.place_id);
-        //console.log(Object.keys(place));
+        var newContent = document.createTextNode(place.name);
+        var newAnchor = document.createElement("a");
+        newAnchor.append(newContent);
+        newAnchor.setAttribute('href', "");
+
+        newDiv.append(newAnchor);
+        //newDiv.addEventListener('click', getDetails(placeID));
+        newDiv.addEventListener('click', function() {
+            getDetails(placeID);
+        });
+        placesList.append(newDiv);
 
 
-        placesList.innerHTML += '<li class="placeLink"><a href ="someMethod">' + place.name + '</a>' + '</li>';
+        //document.create()
 
-        // placesList.innerHTML += place.vicinity;
-        // placesList.innerHTML += '</li>'
-
-
-
-        var placeDetails = getPlaceDetails(place.place_id);
-        //placesList.click(displayAlbumsAndTracks);
+        //Works
+        //var placeDetails = getPlaceDetails(place.place_id);
 
         bounds.extend(place.geometry.location);
     }
     map.fitBounds(bounds);
+}
+
+function getDetails(placeID) {
+    console.log('Clicked in Placelist: ' + placeID);
 }
 
 function getPlaceDetails(googlePlaceID) {
@@ -111,9 +120,9 @@ function getPlaceDetails(googlePlaceID) {
 function showPlaceDetails(place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         //createMarker(place);
-        console.log("Place = " + place.name);
-        console.log("Rating = " + place.rating);
-        console.log("Geometry = " + place.geometry);
+        // console.log("Place = " + place.name);
+        // console.log("Rating = " + place.rating);
+        // console.log("Geometry = " + place.geometry);
 
     } else {
         console.log(status);
