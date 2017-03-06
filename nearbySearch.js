@@ -17,8 +17,8 @@ var map;
 
 function initMap() {
     var austin = {
-        lat: 30.2672654,
-        lng: -97.768282
+        lat: 30.4866996,
+        lng: -97.650965
     };
 
     map = new google.maps.Map(document.getElementById('map'), {
@@ -29,8 +29,9 @@ function initMap() {
     var service = new google.maps.places.PlacesService(map);
     service.nearbySearch({
         location: austin,
-        radius: 5000,
-        type: ['bar']
+        radius: 50000,
+        type: ['bar'],
+        keyword: 'brewery'
     }, processResults);
 }
 
@@ -72,6 +73,10 @@ function createMarkers(places) {
             title: place.name,
             position: place.geometry.location
         });
+
+        // if (place.name.includes("Brewery") || place.name.includes("Brewing")) {
+        //     placesList.innerHTML += '<li>' + place.name + '</li>';
+        // }
 
         placesList.innerHTML += '<li>' + place.name + '</li>';
 
@@ -165,43 +170,6 @@ function createMarkers(places) {
 
 
 
-// var xhr = createCORSRequest('GET', url);
-// if (!xhr) {
-//     console.log('CORS not supported');
-// }
-
-//
-// //Generate the request object
-// // var austinBrewerysRequest = $.ajax({
-// //     type: "GET",
-// //     dataType: 'jsonp',
-// //     url: searchUrl
-// // });
-// // spotifyQueryRequest = $.ajax({
-// //     type: "GET",
-// //     dataType: "JSONP",
-// //     url: "https://maps.googleapis.com/maps/api/place/textsearch/xml?query=brewerys+in+Austin&key=AIzaSyDkglGA_QCRbWdTB8WbheqnjLhGJ4D74Lg"
-// // });
-//
-//
-// // austinBrewerysRequest = $.getJSON("https://maps.googleapis.com/maps/api/place/textsearch/json?query=brewerys+in+Austin&key=" + googlePlacesAPIKey, function(json) {
-// //     console.log(json);
-// // });
-//
-//
-// // austinBrewerysRequest.done(function(austinBrewerysRequest) {
-// //
-// //     console.log(austinBrewerysRequest);
-// // });
-//
-//
-//
-//
-// //
-// var locations = [{
-//     lat: 30.2653309,
-//     lng: -97.7517386
-// }];
 // var locations = [{
 //         lat: -31.563910,
 //         lng: 147.154312
