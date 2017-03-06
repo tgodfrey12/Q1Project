@@ -41,6 +41,8 @@ function processResults(results, status, pagination) {
     } else {
         createMarkers(results);
 
+
+
         if (pagination.hasNextPage) {
             var moreButton = document.getElementById('more');
 
@@ -74,15 +76,51 @@ function createMarkers(places) {
             position: place.geometry.location
         });
 
-        // if (place.name.includes("Brewery") || place.name.includes("Brewing")) {
-        //     placesList.innerHTML += '<li>' + place.name + '</li>';
-        // }
 
-        placesList.innerHTML += '<li>' + place.name + '</li>';
+        // console.log('place = ' + place);
+        // console.log('place_id  = ' + place.place_id);
+        //console.log(Object.keys(place));
+
+
+        placesList.innerHTML += '<li>' + place.name + '<br>';
+        placesList.innerHTML += place.vicinity;
+        placesList.innerHTML += '</li>'
+
+
+
+        var placeDetails = getPlaceDetails(place.place_id);
 
         bounds.extend(place.geometry.location);
     }
     map.fitBounds(bounds);
+}
+
+function getPlaceDetails(googlePlaceID) {
+
+    console.log("PlaceID = " + googlePlaceID);
+    var request = {
+        //placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4'
+        placeId: googlePlaceID
+    };
+
+    //console.log("request = " + request.placeId);
+
+    service = new google.maps.places.PlacesService(map);
+    service.getDetails(request, showPlaceDetails);
+}
+
+function showPlaceDetails(place, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+        //createMarker(place);
+        console.log("Place = " + place.name);
+        console.log("Rating = " + place.rating);
+        console.log("Rating = " + place.geometry);
+
+    } else {
+        console.log(status);
+    }
+
+
 }
 
 // var map;

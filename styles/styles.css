@@ -1,21 +1,23 @@
 #map {
-  height: 80%;
-  width: 75%;
+  height: 85%;
+  width: 896px;
   float:right;
-  position: relative;
+  /*position: relative;*/
   bottom: 35%;
 }
 
 .leftTopPanel{
-  width: 20%;
+  width: 30%;
   height: 50%;
   background-color: green;
   position: relative;
+  overflow: scroll;
 
 }
 
 .leftBottomPanel{
-  width: 20%;
+  width: 30%;
   height: 50%;
   background-color: red;
+  /*overflow: scroll;*/
 }
