@@ -17,15 +17,15 @@
   <div id="map">Map Here</div>
     <div class="buttonPanel">
         <div class="blue ui buttons">
-            <button class="ui button">Brewerys</button>
-            <button class="ui button">Wineries</button>
-            <button class="ui button">Distilleries</button>
+            <button class="ui button" id="breweryButton">Brewerys</button>
+            <button class="ui button" id="wineryButton">Wineries</button>
+            <button class="ui button" id="distilleryButton">Distilleries</button>
         </div>
     </div>
 
     <div class="placesPanel">
         <ul id="places"></ul>
-        <div os-simple-pagination="" on-change-page="ctrl.changePage" page-size="ctrl.pageSize" total-items="ctrl.totalItems" extra-size="ctrl.extraSize" current-page="ctrl.currentPage"></div>
+        <button id="more">More</button>
     </div>
 
     <div class="detailsPanel">
@@ -33,11 +33,10 @@
     </div>
 
 
-    <div>
-        <button id="more">More</button>
-    </div>
-    <div class="leftBottomPanel">
-    </div>
+
+    <div class="leftBottomPanel"></div>
+
+
 </body>
 
 </html>

@@ -1,25 +1,57 @@
 (function() {
     $(document).ready(function() {
-        initMap();
+        setupButtons();
+        initMap("brewery");
         //getAustinBrewerys();
-    })
+    });
 })();
 
 
 var googlePlacesAPIKey = "AIzaSyDkglGA_QCRbWdTB8WbheqnjLhGJ4D74Lg";
-
 
 // This example requires the Places library. Include the libraries=places
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
 var map;
+var currentImage = "beer.png";
 
-function initMap() {
+function setupButtons() {
+    var wineryButton = document.getElementById('wineryButton');
+    wineryButton.disabled = false;
+    wineryButton.addEventListener('click', function() {
+        currentImage = "wine.png";
+        initMap("winery");
+    });
+
+    var distilleryButton = document.getElementById('distilleryButton');
+    distilleryButton.disabled = false;
+    distilleryButton.addEventListener('click', function() {
+        currentImage = "liquor.jpeg";
+        initMap("distillery");
+    });
+
+    var breweryButton = document.getElementById('breweryButton');
+    breweryButton.disabled = false;
+    breweryButton.addEventListener('click', function() {
+        initMap("brewery");
+    });
+}
+
+function initMap(mapType) {
+
+    $('#places').empty();
+
     var austin = {
         lat: 30.4866996,
-        lng: -97.650965
+        lng: -97.7471027
     };
+
+    // var chicago = {
+    //     lat: 41.850,
+    //     lng: -87.650
+    // };
+
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: austin,
@@ -31,11 +63,15 @@ function initMap() {
         location: austin,
         radius: 50000,
         //type: ['bar'],
-        keyword: 'brewery'
+        //keyword: 'brewery'
+        keyword: mapType
     }, processResults);
 }
 
 function processResults(results, status, pagination) {
+
+    //console.log(results);
+
     if (status !== google.maps.places.PlacesServiceStatus.OK) {
         return;
     } else {
@@ -50,6 +86,8 @@ function processResults(results, status, pagination) {
                 moreButton.disabled = true;
                 pagination.nextPage();
             });
+        } else {
+            moreButton.disabled = true;
         }
     }
 }
@@ -60,7 +98,8 @@ function createMarkers(places) {
 
     for (let i = 0, place; place = places[i]; i++) {
         var image = {
-            url: place.icon,
+            //url: place.icon,
+            url: currentImage,
             size: new google.maps.Size(71, 71),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(17, 34),
@@ -70,6 +109,7 @@ function createMarkers(places) {
         var marker = new google.maps.Marker({
             map: map,
             icon: image,
+            //icon: "beer.png",
             title: place.name,
             position: place.geometry.location
         });
@@ -86,7 +126,6 @@ function createMarkers(places) {
         newAnchor.setAttribute('href', "");
 
         newDiv.append(newAnchor);
-        //newDiv.addEventListener('click', getDetails(placeID));
         newDiv.addEventListener('click', function(ev) {
             ev.preventDefault();
             getPlaceDetails(placeID);
@@ -101,8 +140,6 @@ function createMarkers(places) {
 
 //Call the google service to get the details for the place ID
 function getPlaceDetails(googlePlaceID) {
-
-    //console.log("PlaceID = " + googlePlaceID);
     var request = {
         placeId: googlePlaceID
     };
@@ -115,10 +152,11 @@ function getPlaceDetails(googlePlaceID) {
 function showPlaceDetails(place, status) {
     //console.log("in showPlaceDetails");
 
+
     var detailsList = document.getElementById('details');
 
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-        console.log(place);
+        //console.log(place);
         document.getElementById("details").innerHTML = "";
         var detailDiv = document.createElement("p");
         var placeName = document.createTextNode(place.name);
@@ -136,200 +174,43 @@ function showPlaceDetails(place, status) {
         detailsList.append(detailDiv);
 
         detailDiv = document.createElement("p");
-        var placePhone = document.createTextNode(place.website);
-        detailDiv.append(placePhone);
+        var placeWebsite = document.createTextNode(place.website);
+        detailDiv.append(placeWebsite);
         detailsList.append(detailDiv);
-
-
-
-
-
-        //createMarker(place);
-        // console.log("Place = " + place.name);
-        // console.log("Rating = " + place.rating);
-        // console.log("Geometry = " + place.geometry);
 
     } else {
         console.log(status);
     }
 }
 
-
-// var map;
-// var service;
-// var infowindow;
+// function geoFindMe() {
+//     // var output = document.getElementById("out");
 //
-// function initMap() {
-//     var austin = new google.maps.LatLng(30.2672654, -97.768282);
-//
-//     map = new google.maps.Map(document.getElementById('map'), {
-//         center: austin,
-//         zoom: 15
-//     });
-//
-//     var request = {
-//         location: austin,
-//         radius: '5000',
-//         types: ['bar']
-//     };
-//
-//     service = new google.maps.places.PlacesService(map);
-//     service.nearbySearch(request, callback);
-// }
-//
-// function callback(results, status) {
-//     if (status == google.maps.places.PlacesServiceStatus.OK) {
-//         for (var i = 0; i < results.length; i++) {
-//             var place = results[i].name + " " + results[i].id;
-//
-//             //createMarker(results[i]);
-//             console.log(place);
-//         }
+//     if (!navigator.geolocation) {
+//         //output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+//         console.log("Geolocation is not supported by your browser");
+//         return;
 //     }
-// }
-
-// function initMap() {
 //
-//     var map = new google.maps.Map(document.getElementById('map'), {
-//         zoom: 3,
-//         center: {
-//             lat: 30.2653309,
-//             lng: -97.7517386
-//         }
-//     });
+//     function success(position) {
+//         latitude = position.coords.latitude;
+//         longitude = position.coords.longitude;
 //
-//     // Create an array of alphabetical characters used to label the markers.
-//     var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+//         //output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
+//         console.log("Latitude is " + latitude + " Longitude is " + longitude);
 //
-//     // Add some markers to the map.
-//     // Note: The code uses the JavaScript Array.prototype.map() method to
-//     // create an array of markers based on a given "locations" array.
-//     // The map() method here has nothing to do with the Google Maps API.
-//     var markers = locations.map(function(location, i) {
-//         return new google.maps.Marker({
-//             position: location,
-//             label: labels[i % labels.length]
-//         });
-//     });
-//
-//     // Add a marker clusterer to manage the markers.
-//     var markerCluster = new MarkerClusterer(map, markers, {
-//         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-//     });
-// }
-
-
-
-
-// function getAustinBrewerys() {
-//
-//     var brewerysurl = 'https://maps.googleapis.com/maps/api/place/textsearch/json?location=-41.319282,174.818717&radius=1000&sensor=true&query=brewery&key=AIzaSyDkglGA_QCRbWdTB8WbheqnjLhGJ4D74Lg';
-//
-//     var austinBrewerysRequest = $.ajax({
-//         url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-41.319282,174.818717&radius=1000&sensor=true&type=brewery&key=AIzaSyDkglGA_QCRbWdTB8WbheqnjLhGJ4D74Lg',
-//         dataType: 'json'
-//     });
-//
-//     austinBrewerysRequest.done(function(austinBrewerysRequest) {
-//
-//         console.log(austinBrewerysRequest);
-//     });
-//
-//
-// };
-
-
-
-// var locations = [{
-//         lat: -31.563910,
-//         lng: 147.154312
-//     },
-//     {
-//         lat: -33.718234,
-//         lng: 150.363181
-//     },
-//     {
-//         lat: -33.727111,
-//         lng: 150.371124
-//     },
-//     {
-//         lat: -33.848588,
-//         lng: 151.209834
-//     },
-//     {
-//         lat: -33.851702,
-//         lng: 151.216968
-//     },
-//     {
-//         lat: -34.671264,
-//         lng: 150.863657
-//     },
-//     {
-//         lat: -35.304724,
-//         lng: 148.662905
-//     },
-//     {
-//         lat: -36.817685,
-//         lng: 175.699196
-//     },
-//     {
-//         lat: -36.828611,
-//         lng: 175.790222
-//     },
-//     {
-//         lat: -37.750000,
-//         lng: 145.116667
-//     },
-//     {
-//         lat: -37.759859,
-//         lng: 145.128708
-//     },
-//     {
-//         lat: -37.765015,
-//         lng: 145.133858
-//     },
-//     {
-//         lat: -37.770104,
-//         lng: 145.143299
-//     },
-//     {
-//         lat: -37.773700,
-//         lng: 145.145187
-//     },
-//     {
-//         lat: -37.774785,
-//         lng: 145.137978
-//     },
-//     {
-//         lat: -37.819616,
-//         lng: 144.968119
-//     },
-//     {
-//         lat: -38.330766,
-//         lng: 144.695692
-//     },
-//     {
-//         lat: -39.927193,
-//         lng: 175.053218
-//     },
-//     {
-//         lat: -41.330162,
-//         lng: 174.865694
-//     },
-//     {
-//         lat: -42.734358,
-//         lng: 147.439506
-//     },
-//     {
-//         lat: -42.734358,
-//         lng: 147.501315
-//     },
-//     {
-//         lat: -42.735258,
-//         lng: 147.438000
-//     },
-//     {
-//         lat: -43.999792,
-//         lng: 170.463352
+//         // var img = new Image();
+//         // img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
+//         //
+//         // output.appendChild(img);
 //     }
-// ]
+//
+//     function error() {
+//         //output.innerHTML = "Unable to retrieve your location";
+//         console.log("Unable to retrieve your location");
+//     }
+//
+//     //output.innerHTML = "<p>Locating…</p>";
+//
+//     navigator.geolocation.getCurrentPosition(success, error);
+// }
