@@ -24,6 +24,10 @@ function setupButtons() {
         currentImage = "Wine Bottle-48.png";
         $('.breweryButton').toggleClass("brewery ui button");
         $('.distilleryButton').toggleClass("distillery ui button");
+        $('#reviews').empty();
+        $('#details').empty();
+
+
         initMap("winery");
     });
 
@@ -32,6 +36,8 @@ function setupButtons() {
     distilleryButton.addEventListener('click', function() {
         $('.breweryButton').toggleClass("brewery ui button");
         currentImage = "Whisky Still-48.png";
+        $('#reviews').empty();
+        $('#details').empty();
         initMap("distillery");
     });
 
@@ -41,6 +47,8 @@ function setupButtons() {
         $('.distilleryButton').toggleClass("distillery ui button");
         $('.wineryButton').toggleClass("winery ui button");
         currentImage = "Beer Glass-48.png";
+        $('#reviews').empty();
+        $('#details').empty();
         initMap("brewery");
     });
 }
@@ -69,15 +77,14 @@ function initMap(mapType) {
     service.nearbySearch({
         location: austin,
         radius: 50000,
-        //type: ['bar'],
-        //keyword: 'brewery'
         keyword: mapType
     }, processResults);
 }
 
 function processResults(results, status, pagination) {
 
-    //console.log(results);
+    var moreButton = document.getElementById('more');
+    console.log(results);
 
     if (status !== google.maps.places.PlacesServiceStatus.OK) {
         return;
@@ -85,8 +92,6 @@ function processResults(results, status, pagination) {
         createMarkers(results);
 
         if (pagination.hasNextPage) {
-            var moreButton = document.getElementById('more');
-
             moreButton.disabled = false;
 
             moreButton.addEventListener('click', function() {
@@ -95,6 +100,7 @@ function processResults(results, status, pagination) {
             });
         } else {
             moreButton.disabled = true;
+            $('#more').remove();
         }
     }
 }
@@ -104,7 +110,7 @@ function createMarkers(places) {
     var placesList = document.getElementById('places');
 
     for (let i = 0, place; place = places[i]; i++) {
-        var image = {
+        let image = {
             //url: place.icon,
             url: currentImage,
             size: new google.maps.Size(71, 71),
@@ -113,15 +119,33 @@ function createMarkers(places) {
             scaledSize: new google.maps.Size(25, 25)
         };
 
-        var marker = new google.maps.Marker({
+        let marker = new google.maps.Marker({
             map: map,
             icon: image,
-            //icon: "beer.png",
             title: place.name,
+            animation: google.maps.Animation.DROP,
             position: place.geometry.location
         });
 
-        //HAve to use let here because it will use block-level scope
+
+        let infowindow = new google.maps.InfoWindow({
+            content: place.name
+        });
+
+        marker.addListener('click', function() {
+            map.setZoom(15);
+            map.setCenter(marker.getPosition());
+            infowindow.open(map, marker);
+        });
+
+
+
+        // marker.addListener('click', function() {
+        //   infowindow.open(map, marker);
+        // });
+
+
+        //Have to use let here because it will use block-level scope
         //and not be reset every time through the loop
         let placeID = place.place_id;
 
@@ -157,37 +181,77 @@ function getPlaceDetails(googlePlaceID) {
 
 //Show the details in the lower left pane of the page
 function showPlaceDetails(place, status) {
-    //console.log("in showPlaceDetails");
-
 
     var detailsList = document.getElementById('details');
 
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-        //console.log(place);
         document.getElementById("details").innerHTML = "";
-        var detailDiv = document.createElement("p");
+
+        if (place.rating !== undefined) {
+            $('#details').append('Google Overall Rating: ' + place.rating);
+            $('#details').append('<br>');
+            $('#details').append('<br>');
+        } else {
+            $('#details').append('No Rating Available');
+            $('#details').append('<br>');
+            $('#details').append('<br>');
+        }
+
+        var detailDiv = document.createElement("item");
         var placeName = document.createTextNode(place.name);
         detailDiv.append(placeName);
         detailsList.append(detailDiv);
 
-        detailDiv = document.createElement("p");
+        $('#details').append('<br>');
+
+        detailDiv = document.createElement("item");
         var placeAddress = document.createTextNode(place.formatted_address);
         detailDiv.append(placeAddress);
         detailsList.append(detailDiv);
 
-        detailDiv = document.createElement("p");
-        var placePhone = document.createTextNode(place.formatted_phone_number);
-        detailDiv.append(placePhone);
-        detailsList.append(detailDiv);
+        $('#details').append('<br>');
 
-        detailDiv = document.createElement("p");
+        if (place.formatted_phone_number !== undefined) {
+            detailDiv = document.createElement("item");
+            var placePhone = document.createTextNode(place.formatted_phone_number);
+            detailDiv.append(placePhone);
+            detailsList.append(detailDiv);
+        }
+
+        $('#details').append('<div class="ui horizontal divider">');
+
+        detailDiv = document.createElement("item");
         var placeWebsite = document.createTextNode(place.website);
         detailDiv.append(placeWebsite);
         detailsList.append(detailDiv);
+        $('#details').append('<br>');
+
+        showReviews(place);
 
     } else {
         console.log(status);
     }
+}
+
+function showReviews(place) {
+    $('#reviews').empty();
+
+
+    if (place.reviews === undefined) {
+        return;
+    }
+
+    $('#reviews').append("Reviews: " + '<br>');
+
+    var reviewAra = place.reviews;
+
+    reviewAra.forEach(function(review) {
+        $('#reviews').append('<strong>Reviewer: ' + review.author_name + '</strong><br>');
+        $('#reviews').append('<br>');
+        $('#reviews').append('<em>' + review.text + '</em>');
+        $('#reviews').append('<div class="ui horizontal divider">');
+
+    });
 }
 
 // function geoFindMe() {

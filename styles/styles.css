@@ -2,8 +2,6 @@
   height: 800px;
   width: 57.5%;
   float:right;
-  /*position: relative;*/
-  /*bottom: 35%;*/
 }
 
 .buttonPanel{
@@ -15,25 +13,22 @@
   color: black;
   width: 42.5%;
   height: 66%;
-  /*background-color: green;*/
   position: relative;
-  overflow: scroll;
-  /*font-family: "Lucida" Grande, sans-serif;*/
-
+  overflow: auto;
 }
 
 .detailsPanel{
   width: 42.5%;
-  height: 15.5%;
-  /*background-color: red;*/
-  /*background-color: red;*/
-  /*font-family: "Lucida" Grande, sans-serif;*/
-  /*overflow: scroll;*/
+  height: 20%;
+  overflow: auto;
 }
 
 .footer{
   height: 5%;
-  /*background-color: green;*/
   position: absolute;
   width: 100%;
+}
+
+.moreButtonPanel{
+  padding-left: 15%;
 }
