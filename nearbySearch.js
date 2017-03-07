@@ -74,6 +74,8 @@ function createMarkers(places) {
             position: place.geometry.location
         });
 
+        //HAve to use let here because it will use block-level scope
+        //and not be reset every time through the loop
         let placeID = place.place_id;
 
         //Add href to the list items and set up event listener
@@ -91,20 +93,16 @@ function createMarkers(places) {
         });
         placesList.append(newDiv);
 
-
-
         bounds.extend(place.geometry.location);
     }
     map.fitBounds(bounds);
 }
 
-// function getDetails(placeID) {
-//     console.log('Clicked in Placelist: ' + placeID);
-// }
 
+//Call the google service to get the details for the place ID
 function getPlaceDetails(googlePlaceID) {
 
-    console.log("PlaceID = " + googlePlaceID);
+    //console.log("PlaceID = " + googlePlaceID);
     var request = {
         placeId: googlePlaceID
     };
@@ -113,16 +111,38 @@ function getPlaceDetails(googlePlaceID) {
     service.getDetails(request, showPlaceDetails);
 }
 
+//Show the details in the lower left pane of the page
 function showPlaceDetails(place, status) {
-    console.log("in showPlaceDetails");
+    //console.log("in showPlaceDetails");
 
     var detailsList = document.getElementById('details');
 
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-        var detailDiv = document.createElement("li");
-        var newContent = document.createTextNode(place.name);
-        detailDiv.append(newContent);
+        console.log(place);
+        document.getElementById("details").innerHTML = "";
+        var detailDiv = document.createElement("p");
+        var placeName = document.createTextNode(place.name);
+        detailDiv.append(placeName);
         detailsList.append(detailDiv);
+
+        detailDiv = document.createElement("p");
+        var placeAddress = document.createTextNode(place.formatted_address);
+        detailDiv.append(placeAddress);
+        detailsList.append(detailDiv);
+
+        detailDiv = document.createElement("p");
+        var placePhone = document.createTextNode(place.formatted_phone_number);
+        detailDiv.append(placePhone);
+        detailsList.append(detailDiv);
+
+        detailDiv = document.createElement("p");
+        var placePhone = document.createTextNode(place.website);
+        detailDiv.append(placePhone);
+        detailsList.append(detailDiv);
+
+
+
+
 
         //createMarker(place);
         // console.log("Place = " + place.name);

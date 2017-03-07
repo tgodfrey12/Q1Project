@@ -10,6 +10,7 @@
   width: 33%;
 }
 
+
 .placesPanel{
   color: black;
   width: 42.5%;
@@ -24,12 +25,12 @@
 .detailsPanel{
   width: 42.5%;
   height: 33%;
-  background-color: red;
+  /*background-color: red;*/
   /*font-family: "Lucida" Grande, sans-serif;*/
   /*overflow: scroll;*/
 }
 
-li{
+/*li{
   color: black;
   font-family: "Lucida" Grande, sans-serif;
-}
+}*/

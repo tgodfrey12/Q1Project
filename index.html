@@ -16,7 +16,7 @@
 <body>
   <div id="map">Map Here</div>
     <div class="buttonPanel">
-        <div class="black ui buttons">
+        <div class="blue ui buttons">
             <button class="ui button">Brewerys</button>
             <button class="ui button">Wineries</button>
             <button class="ui button">Distilleries</button>
@@ -25,10 +25,11 @@
 
     <div class="placesPanel">
         <ul id="places"></ul>
+        <div os-simple-pagination="" on-change-page="ctrl.changePage" page-size="ctrl.pageSize" total-items="ctrl.totalItems" extra-size="ctrl.extraSize" current-page="ctrl.currentPage"></div>
     </div>
 
     <div class="detailsPanel">
-        <ul id="details">Place Details Here</ul>
+        <ul id="details"></ul>
     </div>
 
 
