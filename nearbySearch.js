@@ -14,26 +14,33 @@ var googlePlacesAPIKey = "AIzaSyDkglGA_QCRbWdTB8WbheqnjLhGJ4D74Lg";
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
 var map;
-var currentImage = "beer.png";
+var currentImage = "Beer Glass-48.png";
 
 function setupButtons() {
     var wineryButton = document.getElementById('wineryButton');
     wineryButton.disabled = false;
+
     wineryButton.addEventListener('click', function() {
-        currentImage = "wine.png";
+        currentImage = "Wine Bottle-48.png";
+        $('.breweryButton').toggleClass("brewery ui button");
+        $('.distilleryButton').toggleClass("distillery ui button");
         initMap("winery");
     });
 
     var distilleryButton = document.getElementById('distilleryButton');
-    distilleryButton.disabled = false;
+    //distilleryButton.disabled = false;
     distilleryButton.addEventListener('click', function() {
-        currentImage = "liquor.jpeg";
+        $('.breweryButton').toggleClass("brewery ui button");
+        currentImage = "Whisky Still-48.png";
         initMap("distillery");
     });
 
     var breweryButton = document.getElementById('breweryButton');
     breweryButton.disabled = false;
     breweryButton.addEventListener('click', function() {
+        $('.distilleryButton').toggleClass("distillery ui button");
+        $('.wineryButton').toggleClass("winery ui button");
+        currentImage = "Beer Glass-48.png";
         initMap("brewery");
     });
 }
