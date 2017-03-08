@@ -22,7 +22,7 @@ function setupButtons() {
 
     wineryButton.addEventListener('click', function() {
         currentImage = "Wine Bottle-48.png";
-        $('.breweryButton').toggleClass("brewery ui button");
+        $('#breweryButton').removeClass('active');
         $('.distilleryButton').toggleClass("distillery ui button");
         $('#reviews').empty();
         $('#details').empty();
@@ -34,7 +34,10 @@ function setupButtons() {
     var distilleryButton = document.getElementById('distilleryButton');
     //distilleryButton.disabled = false;
     distilleryButton.addEventListener('click', function() {
-        $('.breweryButton').toggleClass("brewery ui button");
+        // $('.breweryButton').toggleClass("brewery ui button");
+
+        $('#breweryButton').removeClass('active');
+
         currentImage = "Whisky Still-48.png";
         $('#reviews').empty();
         $('#details').empty();
@@ -54,7 +57,7 @@ function setupButtons() {
 }
 
 function initMap(mapType) {
-
+    // 
     $('#places').empty();
 
     var austin = {
@@ -66,6 +69,11 @@ function initMap(mapType) {
     //     lat: 41.850,
     //     lng: -87.650
     // };
+
+    // $('#breweryButton').addClass('active');
+    if (mapType === "brewery") {
+        $('#breweryButton').addClass('active');
+    }
 
 
     map = new google.maps.Map(document.getElementById('map'), {
