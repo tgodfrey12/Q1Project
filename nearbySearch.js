@@ -1,17 +1,12 @@
 (function() {
     $(document).ready(function() {
         setupButtons();
+
+        //Default settings...
         initMap("brewery", 30.4866996, -97.7471027);
-        //getAustinBrewerys();
     });
 })();
 
-
-//var googlePlacesAPIKey = "AIzaSyDkglGA_QCRbWdTB8WbheqnjLhGJ4D74Lg";
-
-// This example requires the Places library. Include the libraries=places
-// parameter when you first load the API. For example:
-// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
 var map;
 var currentImage = "./icons/Beer Glass-48.png";
@@ -19,6 +14,8 @@ var lat;
 var lng;
 var mapType = "brewery";
 
+
+//Add event listeners for map-related buttons
 function setupButtons() {
 
     var redoButton = document.getElementById('redoButton');
@@ -28,8 +25,6 @@ function setupButtons() {
         initMap(mapType, lat, long);
 
     });
-
-
 
     var wineryButton = document.getElementById('wineryButton');
     wineryButton.addEventListener('click', function() {
@@ -47,10 +42,9 @@ function setupButtons() {
     });
 
     var distilleryButton = document.getElementById('distilleryButton');
-    //distilleryButton.disabled = false;
-    distilleryButton.addEventListener('click', function() {
-        // $('.breweryButton').toggleClass("brewery ui button");
 
+
+    distilleryButton.addEventListener('click', function() {
         $('#breweryButton').removeClass('active');
 
         currentImage = "./icons/Whisky Still-48.png";
@@ -81,34 +75,36 @@ function setupButtons() {
     });
 }
 
+//Initialize the map using the lat/long of the map and the type of map
+//Then create and draw the map
 function initMap(mapType, lattitude, longitude) {
 
     $('#places').empty();
 
-    var austin = {
+    var mapCenter = {
         lat: lattitude,
         lng: longitude
-
     };
 
     if (mapType === "brewery") {
         $('#breweryButton').addClass('active');
     }
 
-
     map = new google.maps.Map(document.getElementById('map'), {
-        center: austin,
+        center: mapCenter,
         zoom: 17
     });
 
     var service = new google.maps.places.PlacesService(map);
     service.nearbySearch({
-        location: austin,
+        location: mapCenter,
         radius: 50000,
         keyword: mapType
     }, processResults);
 }
 
+//Add event listener for the "Show More" button, call the function that
+//adds the markers to the map
 function processResults(results, status, pagination) {
     var moreButton = document.getElementById('more');
 
@@ -131,6 +127,7 @@ function processResults(results, status, pagination) {
     }
 }
 
+//Draw the Markers (icons) on the map based on the search results (places)
 function createMarkers(places) {
     var bounds = new google.maps.LatLngBounds();
     var placesList = document.getElementById('places');
@@ -237,15 +234,12 @@ function showPlaceDetails(place, status) {
             detailsList.append(detailDiv);
         }
 
-        $('#details').append('<div class="ui horizontal divider">');
-
-
-
-        detailDiv = document.createElement("item");
-        var placeWebsite = document.createTextNode(place.website);
-        detailDiv.append(placeWebsite);
-        detailsList.append(detailDiv);
+        // $('#details').append('<div class="ui horizontal divider">');
         $('#details').append('<br>');
+
+        let placeLink = '<a href="' + place.website + '" target="_blank">' + place.website + '</a>"';
+        console.log(placeLink);
+        $(placeLink).appendTo('#details');
 
         showReviews(place);
 
@@ -254,6 +248,7 @@ function showPlaceDetails(place, status) {
     }
 }
 
+//Show the reviews under the details
 function showReviews(place) {
     $('#reviews').empty();
 
