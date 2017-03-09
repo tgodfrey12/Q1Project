@@ -23,8 +23,6 @@ function setupButtons() {
 
     var redoButton = document.getElementById('redoButton');
     redoButton.addEventListener('click', function() {
-        console.log("Redo Button Clicked");
-        // redoButton.disabled = false;
         let lat = map.center.lat();
         let long = map.center.lng();
         initMap(mapType, lat, long);
@@ -35,7 +33,6 @@ function setupButtons() {
 
     var wineryButton = document.getElementById('wineryButton');
     wineryButton.addEventListener('click', function() {
-        console.log("winery Button Clicked");
         currentImage = "./icons/Wine Bottle-48.png";
         $('#breweryButton').removeClass('active');
         $('.distilleryButton').toggleClass("distillery ui button");
@@ -87,9 +84,6 @@ function setupButtons() {
 function initMap(mapType, lattitude, longitude) {
 
     $('#places').empty();
-
-    console.log("lat = " + lattitude);
-    console.log("long = " + longitude);
 
     var austin = {
         lat: lattitude,
