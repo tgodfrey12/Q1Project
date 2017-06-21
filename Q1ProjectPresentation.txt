@@ -1,0 +1,42 @@
+- Introduce yourself to everyone
+
+- Talk about what you made and why
+	-Zubair suggestion
+	-What was the MVP?
+	-Show local
+	-Show another city in the world
+	-Open link in new tab
+	
+
+- Mention any interesting technologies/libraries you used, as well as APIs
+	-Google Places - could not use ajax!
+		-Animated icons
+	-CSS
+	-VJS
+	
+     
+     
+- Demo your app, and all of its features, if it’s interactive like a game, consider using an audience member
+
+
+- After the demo walk through key pieces of code
+	-Google Places calls
+
+- Discuss technical challenges that you had and interesting solutions.  Things you would like to refactor.
+	-Learning the Google Places API
+	-Semantic buttons.  Ugh!
+	-More jquery!  There is some but I could get rid of most VJS.
+
+
+- What you would do differently next time around?
+	-Pick a more challenging project though I don't really know what that means.  More APIs?
+	More data from the same API?  Try to implement some type of back end?
+
+
+- If you had more time what else would you do?
+	-Add Yelp stuff
+	-Develop some back end.
+	-Connect left pane to right pane
+
+
+- Thank the audience, ask them if they have questions
