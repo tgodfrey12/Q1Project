@@ -27,8 +27,3 @@ This application was deployed via github and resides at the following:
 https://tgodfrey12.github.io/Q1Project/
 
 
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
